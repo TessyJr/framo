@@ -25,9 +25,9 @@ export async function getImagesFromCloudinary(
   projectId: string
 ) {
   const results = await cloudinary.v2.search
-    .expression(`folder:${userId}/${projectId} AND resource_type:image`)
+    .expression(`resource_type:image AND folder:${userId}/${projectId}*`) // Fetch images in folder and subfolders
     .sort_by("created_at", "desc")
-    .max_results(5)
+    .max_results(10)
     .execute();
 
   return results.resources;

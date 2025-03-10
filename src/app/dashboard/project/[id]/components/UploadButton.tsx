@@ -30,7 +30,14 @@ export default function UploadButton({
   return (
     <CldUploadButton
       uploadPreset="oqnmglg8"
-      options={{ folder: `${userId}/${projectId}` }}
+      options={{
+        folder: `${userId}/${projectId}`,
+        sources: ["local"],
+        resourceType: "image",
+        maxFileSize: 5 * 1024 * 1024,
+        clientAllowedFormats: ["jpg", "jpeg", "png", "webp"],
+        // clientAllowedFormats: ["jpg", "jpeg", "png", "gif", "webp"],
+      }}
       onSuccess={handleUploadSuccess}
     />
   );
