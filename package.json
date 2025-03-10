@@ -13,8 +13,10 @@
   "dependencies": {
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
+    "cloudinary": "^2.5.1",
     "husky": "^9.1.7",
     "next": "15.2.1",
+    "next-cloudinary": "^6.16.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "pretty-quick": "^4.1.1",
     "react": "^19.0.0",

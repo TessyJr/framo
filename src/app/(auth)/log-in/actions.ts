@@ -9,7 +9,7 @@ export async function logInWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.APP_URL}/api/auth/callback?next=/account`,
+      redirectTo: `${process.env.APP_URL}/api/auth/callback?next=/dashboard`,
     },
   });
 
@@ -54,5 +54,5 @@ export async function verifyOtp(formData: FormData) {
     redirect("/error");
   }
 
-  redirect("/account");
+  redirect("/dashboard");
 }

@@ -1,11 +1,10 @@
 "use client";
+
 import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { type User } from "@supabase/supabase-js";
 
-// ...
-
-export default function AccountForm({ user }: { user: User | null }) {
+export default function AccountForm({ user }: { user: User }) {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
@@ -77,7 +76,7 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <div className="form-widget">
-      {/* ... */}
+      <h1 className="text-xl font-bold">Profile</h1>
 
       <div>
         <label htmlFor="email">Email</label>
