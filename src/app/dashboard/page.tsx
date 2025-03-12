@@ -1,17 +1,17 @@
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/utils/supabase/server";
 import AccountForm from "./components/account-form/account-form";
 import ProjectForm from "./components/project-form/project-form";
 import ProjectsList from "./components/projects-list/projects-list";
-import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
 
   if (!user) {
-    redirect("/log-in");
+    return (
+      <div>
+        <p>Loading... </p>
+      </div>
+    );
   }
 
   return (
@@ -24,7 +24,7 @@ export default async function Dashboard() {
 
       <br />
 
-      <ProjectsList />
+      <ProjectsList user={user} />
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function SignUpPage() {
     await signUpWithEmail(formData);
   }
 
-  async function handlesignUpWithGoogle() {
+  async function handleSignUpWithGoogle() {
     await signUpWithGoogle();
   }
 
@@ -30,10 +30,8 @@ export default function SignUpPage() {
             <button type="submit">Send OTP</button>
           </form>
 
-          <form action="">
-            <button className="" formAction={handlesignUpWithGoogle}>
-              Continue With Google
-            </button>
+          <form action={handleSignUpWithGoogle}>
+            <button type="submit">Continue With Google</button>
           </form>
         </div>
       ) : (

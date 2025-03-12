@@ -1,18 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
+import { User } from "@supabase/supabase-js";
 import { getProjectsByUserId } from "../../actions";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function ProjectsList() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect("/log-in");
-  }
-
+export default async function ProjectsList({ user }: { user: User }) {
   const projects = await getProjectsByUserId(user);
 
   return (

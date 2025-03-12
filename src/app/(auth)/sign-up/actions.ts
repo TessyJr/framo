@@ -22,9 +22,9 @@ export async function signUpWithGoogle() {
 }
 
 export async function signUpWithEmail(formData: FormData) {
-  const supabase = await createClient();
-
   const email = formData.get("email") as string;
+
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
@@ -38,10 +38,10 @@ export async function signUpWithEmail(formData: FormData) {
 }
 
 export async function verifyOtp(formData: FormData) {
-  const supabase = await createClient();
-
   const email = formData.get("email") as string;
   const token = formData.get("token") as string;
+
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.verifyOtp({
     email,

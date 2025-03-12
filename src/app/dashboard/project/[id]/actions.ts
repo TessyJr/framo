@@ -1,6 +1,5 @@
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/server";
-import cloudinary from "cloudinary";
 
 export async function getProjectById(user: User, projectId: string) {
   const supabase = await createClient();
@@ -18,17 +17,4 @@ export async function getProjectById(user: User, projectId: string) {
   }
 
   return data;
-}
-
-export async function getImagesFromCloudinary(
-  userId: string,
-  projectId: string
-) {
-  const results = await cloudinary.v2.search
-    .expression(`resource_type:image AND folder:${userId}/${projectId}*`) // Fetch images in folder and subfolders
-    .sort_by("created_at", "desc")
-    .max_results(10)
-    .execute();
-
-  return results.resources;
 }
