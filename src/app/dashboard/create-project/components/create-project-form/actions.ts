@@ -6,85 +6,50 @@ import { redirect } from "next/navigation";
 
 export async function createProject(
   user: User,
-  formData: FormData,
-  thumbnailFile: File,
-  imageFiles: File[]
+  projectName: string,
+  projectDescription: string
 ) {
-  const projectName = formData.get("projectName") as string;
-  const projectDescription = formData.get("projectDescription") as string;
-
   const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("projects")
     .insert([
       {
+        user_id: user.id,
         name: projectName,
         description: projectDescription,
-        user_id: user.id,
         thumbnail: "",
-        images: [""],
+        images: [],
       },
     ])
-    .select("id");
+    .select("id")
+    .single();
 
   if (error) {
-    console.log(error);
+    console.error("Error creating project:", error);
     redirect("/error");
   }
 
-  // Delete old thumbnail from storage
-  const { error: deleteThumbnailError } = await supabase.storage
-    .from("projects")
-    .remove([`${user.id}/${data[0].id}/thumbnail`]);
+  return data;
+}
 
-  if (deleteThumbnailError) {
-    console.error("Error deleting thumbnail:", deleteThumbnailError);
+export async function updateProject(
+  projectId: string,
+  thumbnailPath: string,
+  imagePaths: string[]
+) {
+  const supabase = await createClient();
+
+  const { error: updateError } = await supabase
+    .from("projects")
+    .update({
+      thumbnail: thumbnailPath,
+      images: imagePaths,
+    })
+    .eq("id", projectId);
+
+  if (updateError) {
+    console.error("Error updating project with image paths:", updateError);
     return;
   }
-
-  const thumbnailFileExt = thumbnailFile.name.split(".").pop();
-  const thumbnailFilePath = `${user.id}/${data[0].id}/thumbnail/thumbnail.${thumbnailFileExt}`;
-  console.log(thumbnailFilePath);
-
-  // Insert new thumbnail to storage
-  const { error: uploadThumbnailError } = await supabase.storage
-    .from("projects")
-    .upload(thumbnailFilePath, thumbnailFile, {
-      upsert: true,
-    });
-
-  if (uploadThumbnailError) {
-    console.error("Error uploading new avatar:", uploadThumbnailError);
-    return;
-  }
-
-  // Delete old iamges from storage
-  const { error: deleteImagesError } = await supabase.storage
-    .from("projects")
-    .remove([`${user.id}/${data[0].id}/images`]);
-
-  if (deleteImagesError) {
-    console.error("Error deleting thumbnail:", deleteImagesError);
-    return;
-  }
-
-  imageFiles.map(async (imageFile, index) => {
-    const imageFileExt = imageFile.name.split(".").pop();
-    const imageFilePath = `${user.id}/${data[0].id}/images/image_${index}.${imageFileExt}`;
-
-    // Insert new image to storage
-    const { error: uploadImageError } = await supabase.storage
-      .from("projects")
-      .upload(imageFilePath, imageFile, {
-        upsert: true,
-      });
-
-    if (uploadImageError) {
-      console.error(`Error uploading image: ${index}`, uploadImageError);
-      return;
-    }
-  });
-
-  redirect("/dashboard");
 }

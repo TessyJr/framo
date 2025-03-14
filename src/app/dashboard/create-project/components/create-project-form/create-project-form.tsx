@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { createProject } from "./actions";
+import { createProject, updateProject } from "./actions";
 import { User } from "@supabase/supabase-js";
 import { ChangeEvent, useRef, useState } from "react";
+import { uploadToStorage } from "@/utils/supabase/storage/client";
+import { redirect } from "next/navigation";
 
 export default function CreateProjectForm({ user }: { user: User }) {
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -16,7 +18,40 @@ export default function CreateProjectForm({ user }: { user: User }) {
 
   const handleCreateProject = async (formData: FormData) => {
     if (thumbnailFile) {
-      await createProject(user, formData, thumbnailFile, imageFiles);
+      const projectName = formData.get("projectName") as string;
+      const projectDescription = formData.get("projectDescription") as string;
+
+      const projectData = await createProject(
+        user,
+        projectName,
+        projectDescription
+      );
+
+      const thumbnailPath = await uploadToStorage({
+        file: thumbnailFile,
+        bucket: "projects",
+        folder: `${user.id}/${projectData.id}/thumbnail`,
+        fileName: "thumbnail",
+      });
+
+      const imagePaths = (
+        await Promise.all(
+          imageFiles.map(async (imageFile, index) => {
+            return await uploadToStorage({
+              file: imageFile,
+              bucket: "projects",
+              folder: `${user.id}/${projectData.id}/images`,
+              fileName: `image-${index}`,
+            });
+          })
+        )
+      ).filter((path): path is string => path !== null);
+
+      if (thumbnailPath && imagePaths) {
+        await updateProject(projectData.id, thumbnailPath, imagePaths);
+      }
+
+      redirect("/dashboard");
     }
   };
 
