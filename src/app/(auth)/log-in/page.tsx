@@ -30,8 +30,8 @@ export default function LogInPage() {
             <button type="submit">Send OTP</button>
           </form>
 
-          <form action="">
-            <button className="" formAction={handleLogInWithGoogle}>
+          <form action={handleLogInWithGoogle}>
+            <button className="" type="submit">
               Continue With Google
             </button>
           </form>
