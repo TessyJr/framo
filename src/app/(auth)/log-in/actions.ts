@@ -14,7 +14,7 @@ export async function logInWithGoogle() {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     redirect("/error");
   }
 
@@ -32,7 +32,7 @@ export async function logInWithEmail(formData: FormData) {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     redirect("/error");
   }
 }
@@ -50,7 +50,7 @@ export async function verifyOtp(formData: FormData) {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     redirect("/error");
   }
 

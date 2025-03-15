@@ -34,22 +34,22 @@ export async function createProject(
 }
 
 export async function updateProject(
-  projectId: string,
+  projectId: number,
   thumbnailPath: string,
   imagePaths: string[]
 ) {
   const supabase = await createClient();
 
-  const { error: updateError } = await supabase
+  const { data, error } = await supabase
     .from("projects")
     .update({
       thumbnail: thumbnailPath,
       images: imagePaths,
     })
-    .eq("id", projectId);
+    .eq("id", Number(projectId))
+    .select();
 
-  if (updateError) {
-    console.error("Error updating project with image paths:", updateError);
-    return;
+  if (error) {
+    console.error("Error updating project:", error);
   }
 }

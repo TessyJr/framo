@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression";
 import { createClient } from "../client";
 
 type UploadProps = {
@@ -26,9 +27,18 @@ export async function uploadToStorage({
   const fileExt = file.name.split(".").pop();
   const path = `${folder}/${fileName}.${fileExt}`;
 
+  try {
+    file = await imageCompression(file, {
+      maxSizeMB: 1,
+    });
+  } catch (error) {
+    console.error("Error compressing image:", error);
+    return null;
+  }
+
   const storage = getStorage();
 
-  const { data, error } = await storage
+  const { error } = await storage
     .from(bucket)
     .upload(path, file, { upsert: true });
 

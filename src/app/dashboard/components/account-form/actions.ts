@@ -10,7 +10,7 @@ export async function signOut() {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     redirect("/error");
   }
 
@@ -50,11 +50,9 @@ export async function updateProfile(user: User, formData: FormData) {
   });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     redirect("/error");
   }
-
-  console.log("Profile Updated");
 }
 
 export async function getAvatar(path: string) {

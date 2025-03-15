@@ -32,7 +32,6 @@ export default function AccountForm({ user }: { user: User }) {
 
         if (profileData.avatar_url) {
           const avatarData = await getAvatar(profileData.avatar_url);
-          console.log(avatarData);
           setAvatarUrl(avatarData);
         }
       }
