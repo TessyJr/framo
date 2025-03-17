@@ -13,6 +13,11 @@ type DeleteProps = {
   paths: string[];
 };
 
+type FetchProps = {
+  bucket: string;
+  path: string;
+};
+
 function getStorage() {
   const { storage } = createClient();
   return storage;
@@ -59,4 +64,17 @@ export async function deleteFromStorage({ bucket, paths }: DeleteProps) {
     console.error("Error deleting from storage:", error);
     return;
   }
+}
+
+export async function fetchFromStorage({ bucket, path }: FetchProps) {
+  const storage = getStorage();
+
+  const { data } = storage.from(bucket).getPublicUrl(path);
+
+  if (!data) {
+    console.error("Nothing to fetch from storage");
+    return null;
+  }
+
+  return data;
 }

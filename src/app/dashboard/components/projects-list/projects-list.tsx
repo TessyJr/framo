@@ -6,8 +6,17 @@ export default async function ProjectsList({ user }: { user: User }) {
   const projects = await getProjectsByUserId(user);
 
   return (
-    <div className="flex flex-col">
-      <h1 className="text-xl font-bold">Your Projects</h1>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <h1 className="text-xl font-bold">Your Projects</h1>
+
+        <Link
+          href="/dashboard/create-project"
+          className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        >
+          Create Project
+        </Link>
+      </div>
 
       <div className="grid grid-cols-4 gap-4">
         {projects.length > 0 ? (

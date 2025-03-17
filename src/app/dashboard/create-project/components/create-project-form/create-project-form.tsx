@@ -185,10 +185,21 @@ export default function CreateProjectForm({ user }: { user: User }) {
         </div>
 
         <button
-          className="group/button transition-d rounded-md bg-zinc-400 shadow-[0_5px] shadow-zinc-200 outline-2 outline-black transition hover:shadow-[0_4px] active:shadow-[0_0]"
+          className="group/button rounded-md bg-zinc-400 shadow-[0_5px] shadow-zinc-300 outline-2 outline-black transition-all hover:shadow-[0_4px] active:shadow-[0_0]"
           type="submit"
         >
-          <div className="-translate-y-1.5 rounded-md bg-zinc-50 px-4 py-2 font-semibold text-black outline-2 outline-black transition group-hover/button:-translate-y-1 group-active/button:-translate-y-0">
+          <div className="-translate-y-1.5 rounded-md bg-zinc-50 px-4 py-2 font-semibold text-black outline-2 outline-black transition-all group-hover/button:-translate-y-1 group-hover/button:bg-zinc-100 group-active/button:-translate-y-0">
+            Create Project
+          </div>
+        </button>
+
+        <br />
+
+        <button
+          className="group/button rounded-md bg-zinc-600 shadow-[0_5px] shadow-zinc-300 outline-2 outline-black transition-all hover:shadow-[0_4px] active:shadow-[0_0]"
+          type="button"
+        >
+          <div className="-translate-y-1.5 rounded-md bg-zinc-800 px-4 py-2 font-semibold text-white outline-2 outline-black transition-all group-hover/button:-translate-y-1 group-hover/button:bg-zinc-700 group-active/button:-translate-y-0">
             Create Project
           </div>
         </button>
